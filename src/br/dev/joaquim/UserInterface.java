@@ -4,6 +4,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 import br.dev.joaquim.bank.BankAccount;
+import br.dev.joaquim.exceptions.InsufficientFoundsException;
 
 public class UserInterface {
     private Scanner input = new Scanner(System.in);
@@ -45,7 +46,7 @@ public class UserInterface {
                         deposit();
                         break;
                     case 3:
-                        withdraw(); // pode dar problema
+                        withdraw();
                         break;
                     case 4:
                         System.out.println("Até a próxima.");
@@ -64,15 +65,21 @@ public class UserInterface {
     private void deposit() {
         System.out.print("\nInforme o valor a ser depositado: ");
         double value = readValue();
-        account.deposit(value);
-        System.out.println("Desposito realizado com sucesso.");
+            account.deposit(value);
+            System.out.println("Desposito realizado com sucesso.");
     }
 
     private void withdraw() {
         System.out.print("\nInforme o valor a ser sacado: ");
         double value = readValue();
-        account.withdraw(value); // pode dar problema
-        System.out.println("Saque realizado com sucesso");
+        try{
+            account.withdraw(value);
+            System.out.println("Saque realizado com sucesso");
+        }catch(InsufficientFoundsException e ){
+            System.out.println("problema no saque:" + e.getMessage());
+
+        }
+        
     }
 
     private int readOption() {
